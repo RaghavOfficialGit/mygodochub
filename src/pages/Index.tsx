@@ -4,7 +4,6 @@ import DocumentFilters from '@/components/DocumentFilters';
 import DocumentTable from '@/components/DocumentTable';
 import AIAgentBar from '@/components/AIAgentBar';
 import { FileText } from 'lucide-react';
-import { motion } from 'framer-motion';
 import type { DateRange } from 'react-day-picker';
 
 const Index = () => {
@@ -30,63 +29,42 @@ const Index = () => {
   }, [filters]);
 
   return (
-    <div className="min-h-screen gradient-mesh">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8 animate-fade-in">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20">
               <FileText className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="text-2xl font-display font-bold text-foreground glow-green-text">
-              Document Hub
-            </h1>
+            <div>
+              <h1 className="text-2xl font-display font-bold text-foreground">
+                Document Hub
+              </h1>
+              <p className="text-muted-foreground text-sm mt-0.5">
+                Manage and explore your project documents across all sources
+              </p>
+            </div>
           </div>
-          <p className="text-muted-foreground text-sm ml-[52px]">
-            Manage and explore your project documents across all sources
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-6"
-        >
-          <p className="text-xs font-display uppercase tracking-wider text-muted-foreground mb-3">AI Agents</p>
           <AIAgentBar />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="mb-6"
-        >
+        {/* Filters */}
+        <div className="mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <DocumentFilters onFilterChange={setFilters} />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mb-3"
-        >
+        {/* Results count */}
+        <div className="mb-3 animate-fade-in" style={{ animationDelay: '0.15s' }}>
           <p className="text-sm text-muted-foreground">
             <span className="text-primary font-semibold">{filteredDocs.length}</span> documents found
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-        >
+        {/* Table */}
+        <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <DocumentTable documents={filteredDocs} />
-        </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, X } from 'lucide-react';
+import { CalendarIcon, X, Filter } from 'lucide-react';
 import { format } from 'date-fns';
 import { SOURCES, DOCUMENT_TYPES, PROJECTS } from '@/data/documents';
 import type { DateRange } from 'react-day-picker';
@@ -48,33 +47,38 @@ const DocumentFilters = ({ onFilterChange }: DocumentFiltersProps) => {
   const hasFilters = source !== 'all' || documentType !== 'all' || project !== 'all' || dateRange;
 
   return (
-    <div className="glass-surface rounded-lg p-4">
+    <div className="card-elevated p-4">
       <div className="flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-2 text-muted-foreground mr-1">
+          <Filter className="h-4 w-4" />
+          <span className="text-xs font-display font-semibold uppercase tracking-wider">Filters</span>
+        </div>
+
         <Select value={source} onValueChange={(v) => handleChange('source', v)}>
-          <SelectTrigger className="w-[160px] bg-secondary border-border text-foreground">
+          <SelectTrigger className="w-[150px] bg-background border-border text-foreground rounded-lg transition-all duration-200 hover:border-primary/40">
             <SelectValue placeholder="Source" />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
+          <SelectContent className="bg-popover border-border shadow-lg z-50">
             <SelectItem value="all">All Sources</SelectItem>
             {SOURCES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
           </SelectContent>
         </Select>
 
         <Select value={documentType} onValueChange={(v) => handleChange('documentType', v)}>
-          <SelectTrigger className="w-[180px] bg-secondary border-border text-foreground">
+          <SelectTrigger className="w-[170px] bg-background border-border text-foreground rounded-lg transition-all duration-200 hover:border-primary/40">
             <SelectValue placeholder="Document Type" />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
+          <SelectContent className="bg-popover border-border shadow-lg z-50">
             <SelectItem value="all">All Types</SelectItem>
             {DOCUMENT_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
           </SelectContent>
         </Select>
 
         <Select value={project} onValueChange={(v) => handleChange('project', v)}>
-          <SelectTrigger className="w-[180px] bg-secondary border-border text-foreground">
+          <SelectTrigger className="w-[170px] bg-background border-border text-foreground rounded-lg transition-all duration-200 hover:border-primary/40">
             <SelectValue placeholder="Project" />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
+          <SelectContent className="bg-popover border-border shadow-lg z-50">
             <SelectItem value="all">All Projects</SelectItem>
             {PROJECTS.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
           </SelectContent>
@@ -82,7 +86,7 @@ const DocumentFilters = ({ onFilterChange }: DocumentFiltersProps) => {
 
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[240px] justify-start text-left bg-secondary border-border text-foreground">
+            <Button variant="outline" className="w-[220px] justify-start text-left bg-background border-border text-foreground rounded-lg transition-all duration-200 hover:border-primary/40">
               <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
               {dateRange?.from ? (
                 dateRange.to ? (
@@ -91,19 +95,18 @@ const DocumentFilters = ({ onFilterChange }: DocumentFiltersProps) => {
               ) : 'Date Range'}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 bg-popover border-border" align="start">
+          <PopoverContent className="w-auto p-0 bg-popover border-border shadow-lg z-50" align="start">
             <Calendar
               mode="range"
               selected={dateRange}
               onSelect={handleDateChange}
               numberOfMonths={2}
-              className="text-foreground"
             />
           </PopoverContent>
         </Popover>
 
         {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="text-muted-foreground hover:text-foreground">
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="text-muted-foreground hover:text-foreground transition-colors duration-200">
             <X className="h-4 w-4 mr-1" /> Clear
           </Button>
         )}
