@@ -1,12 +1,14 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { MOCK_DOCUMENTS } from '@/data/documents';
 import DocumentFilters from '@/components/DocumentFilters';
 import DocumentTable from '@/components/DocumentTable';
 import AIAgentBar from '@/components/AIAgentBar';
 import { FileText } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
+import type { Document } from '@/data/documents';
 
 const Index = () => {
+  const [syncedDocs, setSyncedDocs] = useState<Document[]>([]);
   const [filters, setFilters] = useState({
     source: 'all',
     documentType: 'all',
@@ -14,8 +16,18 @@ const Index = () => {
     dateRange: undefined as DateRange | undefined,
   });
 
+  const allDocs = useMemo(() => [...MOCK_DOCUMENTS, ...syncedDocs], [syncedDocs]);
+
+  const handleSyncDocuments = useCallback((docs: Document[]) => {
+    setSyncedDocs(prev => {
+      const existingIds = new Set([...MOCK_DOCUMENTS, ...prev].map(d => d.id));
+      const newDocs = docs.filter(d => !existingIds.has(d.id));
+      return [...prev, ...newDocs];
+    });
+  }, []);
+
   const filteredDocs = useMemo(() => {
-    return MOCK_DOCUMENTS.filter(doc => {
+    return allDocs.filter(doc => {
       if (filters.source !== 'all' && doc.source !== filters.source) return false;
       if (filters.documentType !== 'all' && doc.documentType !== filters.documentType) return false;
       if (filters.project !== 'all' && doc.project !== filters.project) return false;
@@ -46,7 +58,7 @@ const Index = () => {
               </p>
             </div>
           </div>
-          <AIAgentBar />
+          <AIAgentBar onSyncDocuments={handleSyncDocuments} />
         </div>
 
         {/* Filters */}
