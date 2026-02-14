@@ -14,28 +14,30 @@ interface SourceConnection {
   authType: string;
   clientId: string;
   clientSecret: string;
+  identityZone: string;
+  region: string;
 }
 
 const INITIAL_SOURCES: SourceConnection[] = [
-  { id: '1', sourceName: 'SharePoint Production', tenantId: 'tenant-001', authType: 'OAuth 2.0', clientId: 'sp-client-001', clientSecret: '••••••••' },
-  { id: '2', sourceName: 'Jira Cloud', tenantId: 'tenant-002', authType: 'API Key', clientId: 'jira-client-001', clientSecret: '••••••••' },
+  { id: '1', sourceName: 'SharePoint Production', tenantId: 'tenant-001', authType: 'OAuth 2.0', clientId: 'sp-client-001', clientSecret: '••••••••', identityZone: 'us-east', region: 'US East' },
+  { id: '2', sourceName: 'Jira Cloud', tenantId: 'tenant-002', authType: 'API Key', clientId: 'jira-client-001', clientSecret: '••••••••', identityZone: 'eu-west', region: 'EU West' },
 ];
 
 const ManageSources = () => {
   const [sources, setSources] = useState<SourceConnection[]>(INITIAL_SOURCES);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState({ sourceName: '', tenantId: '', authType: '', clientId: '', clientSecret: '' });
+  const [form, setForm] = useState({ sourceName: '', tenantId: '', authType: '', clientId: '', clientSecret: '', identityZone: '', region: '' });
 
   const openNew = () => {
     setEditingId(null);
-    setForm({ sourceName: '', tenantId: '', authType: '', clientId: '', clientSecret: '' });
+    setForm({ sourceName: '', tenantId: '', authType: '', clientId: '', clientSecret: '', identityZone: '', region: '' });
     setDialogOpen(true);
   };
 
   const openEdit = (s: SourceConnection) => {
     setEditingId(s.id);
-    setForm({ sourceName: s.sourceName, tenantId: s.tenantId, authType: s.authType, clientId: s.clientId, clientSecret: '' });
+    setForm({ sourceName: s.sourceName, tenantId: s.tenantId, authType: s.authType, clientId: s.clientId, clientSecret: '', identityZone: s.identityZone, region: s.region });
     setDialogOpen(true);
   };
 
@@ -119,6 +121,8 @@ const ManageSources = () => {
             </div>
             <div><Label>Client ID *</Label><Input value={form.clientId} onChange={e => setForm(f => ({ ...f, clientId: e.target.value }))} placeholder="Client ID" /></div>
             <div><Label>Client Secret</Label><Input type="password" value={form.clientSecret} onChange={e => setForm(f => ({ ...f, clientSecret: e.target.value }))} placeholder="••••••••" /></div>
+            <div><Label>Identity Zone</Label><Input value={form.identityZone} onChange={e => setForm(f => ({ ...f, identityZone: e.target.value }))} placeholder="e.g. us-east" /></div>
+            <div><Label>Region</Label><Input value={form.region} onChange={e => setForm(f => ({ ...f, region: e.target.value }))} placeholder="e.g. US East" /></div>
           </div>
           <div className="flex gap-3 mt-4">
             <Button onClick={handleSave} className="bg-primary text-primary-foreground hover:bg-primary/90">Save</Button>
