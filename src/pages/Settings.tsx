@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MessageSquare, Plug, Shield, Zap } from 'lucide-react';
+import { ArrowLeft, MessageSquare, Plug, Shield, Zap, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ManagePrompts from '@/components/settings/ManagePrompts';
 import ManageSources from '@/components/settings/ManageSources';
 import ManageRoles from '@/components/settings/ManageRoles';
 import ManageAICredits from '@/components/settings/ManageAICredits';
+import ManageUsers from '@/components/settings/ManageUsers';
 
 const tabs = [
   { id: 'prompts', label: 'Manage Prompts', icon: MessageSquare },
   { id: 'sources', label: 'Manage Sources', icon: Plug },
   { id: 'roles', label: 'Manage Roles', icon: Shield },
   { id: 'credits', label: 'Manage AI Credits', icon: Zap },
+  { id: 'users', label: 'User Management', icon: Users },
 ] as const;
 
 type TabId = typeof tabs[number]['id'];
@@ -27,6 +29,7 @@ const Settings = () => {
       case 'sources': return <ManageSources />;
       case 'roles': return <ManageRoles />;
       case 'credits': return <ManageAICredits />;
+      case 'users': return <ManageUsers />;
     }
   };
 
