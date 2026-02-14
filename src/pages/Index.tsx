@@ -3,14 +3,11 @@ import { MOCK_DOCUMENTS } from '@/data/documents';
 import DocumentFilters from '@/components/DocumentFilters';
 import DocumentTable from '@/components/DocumentTable';
 import AIAgentBar from '@/components/AIAgentBar';
-import { Button } from '@/components/ui/button';
-import { FileText, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { FileText } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 import type { Document } from '@/data/documents';
 
 const Index = () => {
-  const navigate = useNavigate();
   const [syncedDocs, setSyncedDocs] = useState<Document[]>([]);
   const [filters, setFilters] = useState({
     source: 'all',
@@ -63,9 +60,6 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-3">
             <AIAgentBar onSyncDocuments={handleSyncDocuments} />
-            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')} className="hover:bg-accent rounded-lg">
-              <Settings className="h-5 w-5 text-muted-foreground" />
-            </Button>
           </div>
         </div>
 
